@@ -239,6 +239,8 @@ upload(req, res, function (err) {
 
  
 
+app.get("/color") 
+
 
 const PORT = process.env.PORT || 3000 ;
 app.listen(PORT,e => console.log(`server is listening at http://localhost:${PORT}`));
