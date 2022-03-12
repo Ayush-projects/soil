@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<style>
+
+html,body{
+       width: 100%;
+	   height: 100%;
+}
+
+ body {
+     background: #0d161f;
+}
+
+#circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+	width: 150px;
+    height: 150px;	
+}
+
+.loader {
+    width: calc(100% - 0px);
+	height: calc(100% - 0px);
+	border: 8px solid #162534;
+	border-top: 8px solid #09f;
+	border-radius: 50%;
+	animation: rotate 5s linear infinite;
+}
+
+.head{
+    background-color: white;
+    color:  rgb(17, 32, 46);
+    width: 100vw;
+    text-align: center;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes rotate {
+100% {transform: rotate(360deg);}
+} 
+</style>
+    <title>Loading</title>
+</head>
+<body>
+    <h1 class = "head">Processing Color Palette</h1><br>
+<div id="circle">
+    <div class="loader">
+      <div class="loader">
+          <div class="loader">
+             <div class="loader">
+  
+             </div>
+          </div>
+      </div>
+    </div>
+  </div> 
+
+<div id="data" style="display: none;">
+<%=imgName %>
+</div>
+
+   <script>
+  
+
+   window.onload = function()
+   {
+        let imageName = document.getElementById("data").innerHTML;
+     
+
+
+        fetch("/test/"+ imageName ).then((res)=>{
+            return res.json();
+        }).then((fres)=>{
+             window.location.href = fres.redirect 
+        }).catch((error)=>{
+            console.log(error)
+        })
+
+
+
+
+   }
+
+
+
+
+
+
+
+   </script>
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
