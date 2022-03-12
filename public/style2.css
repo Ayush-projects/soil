@@ -1,0 +1,92 @@
+*{
+    margin: 0px;
+    overflow: hidden;
+}
+
+body{
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: rgb(17, 32, 46);
+    color: white;
+}
+
+.main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 20px;
+}
+
+.head{
+    background-color: white;
+    color:  rgb(17, 32, 46);
+    width: 100vw;
+    text-align: center;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btns{
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(25, 112, 25);
+    color: white;
+    padding: 8px;
+    display: inline-block;
+    font-size: 30px;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.btns:hover{
+    background-color: transparent;
+    cursor: pointer;
+    display: inline-block;
+    border: solid 2px rgb(25, 112, 25);
+
+}
+
+.line{
+    font-size: 40px;
+}
+
+.middle{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.text{
+    border: none;
+    font-family: 'Nunito Sans', sans-serif;
+    padding: 8px;
+    outline: none;
+    resize: none;
+    font-size: 20px;
+    border-radius: 4px;
+    overflow-y: scroll;
+}
+
+.btn{
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(25, 112, 25);
+    color: white;
+    display: inline-block;
+    padding: 3px;
+    font-size: 20px;
+   
+    height: 40px;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.btn:hover{
+    background-color: transparent;
+    cursor: pointer;
+    border: solid 2px rgb(25, 112, 25);
+    display: inline-block;
+
+}

@@ -19,12 +19,15 @@ app.get("/processing/:id", (req,res)=>{
   res.render("processing" ,{imageName: req.params.id})
 })
 
-app.get('/loading/:imgname', (req,res)=>{
+app.get('/loading1/:imgname', (req,res)=>{
   let imgName = req.params.imgname
   res.render("loading1" ,{imgName})
 })
 
-
+app.get('/loading2/:imgname', (req,res)=>{
+  let imgName = req.params.imgname
+  res.render("loading2" ,{imgName})
+})
 
 
 app.post('/profile', function (req, res, next) {
@@ -127,10 +130,10 @@ upload(req, res, function (err) {
  }) 
 
 
- app.get("/test/:id", (req,res)=>{
+ app.get("/colorPalette/:id", (req,res)=>{
          let imageName = req.params.id;
        
-        let pythonProcess = spawn("python", ["Colorpalette.py",  __dirname + "/uploads/" + imageName  + ".jpg"])
+        let pythonProcess = spawn("python", ["Colorpalette.py",  __dirname + "/uploads/pre_" + imageName  + ".jpg"])
          let outputdata = ""
 
         pythonProcess.on("close", (app)=>{
@@ -142,7 +145,7 @@ upload(req, res, function (err) {
               
                else
                {
-                 res.json({redirect: "test1/" + imageName})
+                 res.json({redirect: "colorspace/" + imageName})
                }
 
              })
@@ -155,6 +158,34 @@ upload(req, res, function (err) {
         })
  })
 
+ 
+ app.get("/colorSpace/:id", (req,res)=>{
+  let imageName = req.params.id;
+
+ let pythonProcess = spawn("python", ["ColorSpace.py",  __dirname + "/uploads/pre_" + imageName  + ".jpg"])
+  let outputdata = ""
+
+ pythonProcess.on("close", (app)=>{
+      fs.writeFile(__dirname + "/uploads/colorSD_" + imageName +".txt", outputdata, (error, data)=>{
+        if(error)
+        {   console.log(error)
+         res.json({message: error})
+        }
+       
+        else
+        {
+          res.json({redirect: "colorspace/" + imageName})
+        }
+
+      })
+ })
+ pythonProcess.on("error", (err)=>{
+   console.log(error)
+ })
+ pythonProcess.stdout.on("data", (data)=>{
+    outputdata += data.toString()
+ })
+})
 
 
  app.get("/api/:type/:fileName", (req,res)=>{
@@ -170,10 +201,10 @@ upload(req, res, function (err) {
       case "pre":
         res.sendFile(__dirname +"/uploads/" + "pre_"+fileName +".jpg")
         break;
-        case "colorP":
-        res.sendFile(__dirname +"/uploads/" + "colorP_"+fileName + ".jpg")
+        case "colorp":
+        res.sendFile(__dirname +"/uploads/" + "colorP_pre_"+fileName + ".jpg")
         break;
-        case "colorPD":
+        case "colorpd":
           fs.readFile(__dirname + "/uploads/" + "colorPD_" + fileName + ".txt", (error, data)=>{
             if(error)
             res.json({message: error})
@@ -181,20 +212,20 @@ upload(req, res, function (err) {
             res.json({message: data.toString()}) 
           })
          break;
-         case "colorSRGB":
-          res.sendFile(__dirname +"/uploads/" + "colorSRGB_"+fileName + ".jpg")
+         case "colorsrgb":
+          res.sendFile(__dirname +"/uploads/" + "colorSRGB_pre_"+fileName + ".jpg")
           break;
-          case "colorSLAB":
-            res.sendFile(__dirname +"/uploads/" + "colorSLAB_"+fileName + ".jpg")
+          case "colorslab":
+            res.sendFile(__dirname +"/uploads/" + "colorSLAB_pre_"+fileName + ".jpg")
             break;
-            case "colorSHSV":
-              res.sendFile(__dirname +"/uploads/" + "colorSHSV_"+fileName + ".jpg")
+            case "colorshsv":
+              res.sendFile(__dirname +"/uploads/" + "colorSHSV_pre_"+fileName + ".jpg")
               break;
-              case "colorSXYZ":
-                res.sendFile(__dirname +"/uploads/" + "colorSXYZ_"+fileName + ".jpg")
+              case "colorsxyz":
+                res.sendFile(__dirname +"/uploads/" + "colorSXYZ_pre_"+fileName + ".jpg")
                 break;
-                case "colorSRGBD":
-                  fs.readFile(__dirname + "/uploads/" + "colorSRGBD_" + fileName + ".txt", (error, data)=>{
+                 case "colorsd":
+                  fs.readFile(__dirname + "/uploads/" + "colorSD_" + fileName + ".txt", (error, data)=>{
                     if(error)
                     res.json({message: error})
                     else
@@ -202,33 +233,7 @@ upload(req, res, function (err) {
                   })
 
                  break;
-                 case "colorSLABD":
-                  fs.readFile(__dirname + "/uploads/" + "colorSLABD_" + fileName + ".txt", (error, data)=>{
-                    if(error)
-                    res.json({message: error})
-                    else
-                    res.json({message: data.toString()}) 
-                  })
-
-                 break;
-                 case "colorSHSVD":
-                  fs.readFile(__dirname + "/uploads/" + "colorSHSVD_" + fileName + ".txt", (error, data)=>{
-                    if(error)
-                    res.json({message: error})
-                    else
-                    res.json({message: data.toString()}) 
-                  })
-
-                 break;
-                 case "colorSXYZD":
-                  fs.readFile(__dirname + "/uploads/" + "colorSXYZD_" + fileName + ".txt", (error, data)=>{
-                    if(error)
-                    res.json({message: error})
-                    else
-                    res.json({message: data.toString()}) 
-                  })
-
-                 break;
+                
         
 
         
@@ -237,6 +242,11 @@ upload(req, res, function (err) {
    }
  })
 
+
+ app.get("/display/:id", (req,res)=>{
+   let imageName = req.params.id;
+   res.render("display", {imageName})
+ })
  
 
 app.get("/color") 

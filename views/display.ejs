@@ -1,0 +1,38 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preprocessed Image</title>
+    <link rel = "stylesheet" href = "/style2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class = "main">
+    <h1 class = "head">Output Window</h1><br>
+    <iframe class = "text" src="/api/pre/<%=imageName%>" height="400" width="400" id="output"></iframe><br>
+   <button class = "btn"  onclick="colorpalette()">See Color Palette Image</button>
+   <br>
+    <button class = "btn" onclick="colorspacergb()">See Color Space RGB Image</button>
+    </div>
+    <div id="imageName" style="display: none;"> <%= imageName %> </div>
+
+<script>
+  function colorpalette()
+  { 
+    let fileName = document.getElementById("imageName").innerHTML;
+    console.log(fileName)
+   document.getElementById("output").src = "/api/colorp/" + fileName;
+  }
+  function colorspacergb()
+  {
+   document.getElementById("output").src = "/api/colorsrgb/" + document.getElementById("imageName").innerHTML;
+  }
+</script>
+</body>
+</html>

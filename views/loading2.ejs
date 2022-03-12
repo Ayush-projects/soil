@@ -55,7 +55,7 @@ html,body{
     <title>Loading</title>
 </head>
 <body>
-    <h1 class = "head">Processing Color Palette</h1><br>
+    <h1 class = "head">Processing Color Space</h1><br>
 <div id="circle">
     <div class="loader">
       <div class="loader">
@@ -81,10 +81,10 @@ html,body{
      
 
 
-        fetch("/test/"+ imageName ).then((res)=>{
+        fetch("/colorSpace/"+ imageName ).then((res)=>{
             return res.json();
         }).then((fres)=>{
-             window.location.href = fres.redirect 
+             window.location.href =  "/display/" + imageName
         }).catch((error)=>{
             console.log(error)
         })
