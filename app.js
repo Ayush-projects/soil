@@ -136,6 +136,21 @@ upload(req, res, function (err) {
  })
 
 
+app.get("/clear", (req,res)=>{
+  let directory = "uploads"
+  fs.readdir(directory, (err, files) => {
+    if (err) throw err;
+  
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), err => {
+        if (err) throw err;
+        res.send("Deleted")
+      });
+    }
+  });
+})
+
+
  app.get("/colorPalette/:id", (req,res)=>{
      
          let imageName = req.params.id;
