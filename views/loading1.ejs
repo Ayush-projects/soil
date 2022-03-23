@@ -64,19 +64,20 @@ html,body{
 
    window.onload = function()
    {
-        let imageName = document.getElementById("data").innerHTML;
-     
-
+        var imageName = document.getElementById("data").innerHTML;
+       
+    
 
         fetch("/colorPalette/"+ imageName ).then((res)=>{
             return res.json();
         }).then((fres)=>{
+           
+         
              window.location.href = "/loading2/" + imageName
-        }).catch((error)=>{
-            console.log(error)
         })
 
-
+    
+  
 
 
    }

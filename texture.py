@@ -8,58 +8,63 @@ import math
 import sys
 
 #Spectral Density
-imgName = sys.argv[1]
-img = cv2.imread(imgName,0) #import image
-img = cv2.resize(img, (400, 400))
-print(img.shape)
-ft2 = np.fft.fft2(img)
-ftshift = np.fft.fftshift(ft2)
-w=img.shape[1] #width of image
-h=img.shape[0] #height of image 
 
-magnitude_spectrum = 20*np.log(np.abs(ftshift))
+try:        
+    imgName = sys.argv[1]
+    img = cv2.imread(imgName,0) #import image
+    img = cv2.resize(img, (400, 400))
+    print("Image shape: " ,img.shape)
+    ft2 = np.fft.fft2(img)
+    ftshift = np.fft.fftshift(ft2)
+    w=img.shape[1] #width of image
+    h=img.shape[0] #height of image 
 
-plt.axis('off')
-plt.imshow(magnitude_spectrum, cmap = 'jet')
-# plt.savefig('uploads/colorTD_' + imgName)
+    magnitude_spectrum = 20*np.log(np.abs(ftshift))
 
-
-
-#RAPSD
-
-# Round up the size along this axis to an even number
-n = int( math.ceil(img.shape[0] / 2.) * 2 )
-
-# We use rfft since we are processing real values
-a = np.fft.rfft(img,n, axis=0)
-
-a = a.real*a.real + a.imag*a.imag
-ax = a.sum(axis=1)/a.shape[1]         #Amplitudes on x axis
+    plt.axis('off')
+    plt.imshow(magnitude_spectrum, cmap = 'jet')
+    # plt.savefig('uploads\colorTD_' + imgName)
 
 
-fx = np.fft.rfftfreq(n)   #frequencies on x axis     
 
-n = int( math.ceil(img.shape[1] / 2.) * 2 )
+    #RAPSD
 
-a = np.fft.rfft(img,n,axis=1)
+    # Round up the size along this axis to an even number
+    n = int( math.ceil(img.shape[0] / 2.) * 2 )
 
-a = a.real*a.real + a.imag*a.imag
-ay = a.sum(axis=0)/a.shape[0]      #Amplitudes on y axis
+    # We use rfft since we are processing real values
+    a = np.fft.rfft(img,n, axis=0)
 
-fy = np.fft.rfftfreq(n)         #frequencies on y axis 
-
-
-r=(np.sqrt(ax**2 + ay**2))     #Amplitudes in radial direction
+    a = a.real*a.real + a.imag*a.imag
+    ax = a.sum(axis=1)/a.shape[1]         #Amplitudes on x axis
 
 
-plt.scatter(np.log(fx[1:]),np.log(r[1:]), s=5)
-m, c = np.polyfit(np.log(fx[1:]), np.log(r[1:]), 1)
+    fx = np.fft.rfftfreq(n)   #frequencies on x axis     
 
-plt.plot(np.log(fx[1:]), m*np.log(fx[1:]) + c, 'r', label='y={:.2f}x+{:.2f}'.format(m,c))
+    n = int( math.ceil(img.shape[1] / 2.) * 2 )
 
-plt.legend()
-plt.savefig('uploads/colorT_' + imgName)
-#plt.show()
-print('slope of line', m)
-h=(-m-1)/2
-print('surface roughness', h)
+    a = np.fft.rfft(img,n,axis=1)
+
+    a = a.real*a.real + a.imag*a.imag
+    ay = a.sum(axis=0)/a.shape[0]      #Amplitudes on y axis
+
+    fy = np.fft.rfftfreq(n)         #frequencies on y axis 
+
+
+    r=(np.sqrt(ax**2 + ay**2))     #Amplitudes in radial direction
+
+
+    plt.scatter(np.log(fx[1:]),np.log(r[1:]), s=5)
+    m, c = np.polyfit(np.log(fx[1:]), np.log(r[1:]), 1)
+    
+
+    plt.plot(np.log(fx[1:]), m*np.log(fx[1:]) + c, 'r', label='y={:.2f}x+{:.2f}'.format(m,c))
+
+    plt.legend()
+    save_name = "colorT_" +  os.path.basename(sys.argv[1])
+    plt.savefig("uploads/" + save_name)
+    #plt.show()
+    print('slope of line', m)
+    h=(-m-1)/2
+    print('surface roughness', h)
+except Exception as e: print(e)

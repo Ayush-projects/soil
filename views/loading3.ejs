@@ -75,7 +75,7 @@ html,body{
         fetch("/texture/"+ imageName ).then((res)=>{
             return res.json();
         }).then((fres)=>{
-             window.location.href =  "/loading4/" + imageName
+             window.location.href =  "/output/" + imageName
         }).catch((error)=>{
             console.log(error)
         })

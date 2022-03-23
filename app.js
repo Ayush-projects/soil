@@ -131,9 +131,7 @@ upload(req, res, function (err) {
 
 
 
- app.get("/output" ,(req,res)=>{
-   res.render("output")
- })
+
 
 
 app.get("/clear", (req,res)=>{
@@ -144,10 +142,11 @@ app.get("/clear", (req,res)=>{
     for (const file of files) {
       fs.unlink(path.join(directory, file), err => {
         if (err) throw err;
-        res.send("Deleted")
+      
       });
     }
   });
+  res.send("Deleted")
 })
 
 
@@ -158,10 +157,10 @@ app.get("/clear", (req,res)=>{
         let pythonProcess = spawn("python", ["Colorpalette.py",  __dirname + "/uploads/pre_" + imageName  + ".jpg"])
          let outputdata = ""
 
-        pythonProcess.on("close", (app)=>{
+        pythonProcess.on("close", (data_d)=>{
              fs.writeFile(__dirname + "/uploads/colorPD_" + imageName +".txt", outputdata, (error, data)=>{
                if(error)
-               {  
+               {  console.log(error)
                 res.json({message: error})
                }
               
@@ -182,8 +181,8 @@ app.get("/clear", (req,res)=>{
 
  
  app.get("/colorSpace/:id", (req,res)=>{
+   try{
   let imageName = req.params.id;
-
  let pythonProcess = spawn("python", ["ColorSpace.py",  __dirname + "/uploads/pre_" + imageName  + ".jpg"])
   let outputdata = ""
 
@@ -207,6 +206,11 @@ app.get("/clear", (req,res)=>{
  pythonProcess.stdout.on("data", (data)=>{
     outputdata += data.toString()
  })
+}
+catch(err)
+{
+  console.log(err)
+}
 })
 
 
@@ -218,13 +222,13 @@ app.get("/clear", (req,res)=>{
       switch(type)
     {   
       case "file":
-        res.sendFile(__dirname + "/uploads/" + fileName + ".jpg")
+       return res.sendFile(__dirname + "/uploads/" + fileName + ".jpg")
         break;
       case "pre":
-        res.sendFile(__dirname +"/uploads/" + "pre_"+fileName +".jpg")
+        return res.sendFile(__dirname +"/uploads/" + "pre_"+fileName +".jpg")
         break;
         case "colorp":
-        res.sendFile(__dirname +"/uploads/" + "colorP_pre_"+fileName + ".jpg")
+        return res.sendFile(__dirname +"/uploads/" + "colorP_pre_"+fileName + ".jpg")
         break;
         case "colorpd":
           fs.readFile(__dirname + "/uploads/" + "colorPD_" + fileName + ".txt", (error, data)=>{
@@ -234,27 +238,39 @@ app.get("/clear", (req,res)=>{
             res.json({message: data.toString()}) 
           })
          break;
+         case "colortd":
+          fs.readFile(__dirname + "/uploads/" + "colorTD_" + fileName + ".txt", (error, data)=>{
+            if(error)
+            res.json({message: error})
+            else
+            res.json({message: data.toString()}) 
+          })
+         break;
          case "colorsrgb":
-          res.sendFile(__dirname +"/uploads/" + "colorSRGB_pre_"+fileName + ".jpg")
-          break;
+         return res.sendFile(__dirname +"/uploads/" + "colorSRGB_pre_"+fileName + ".jpg")
+        break;
           case "colorslab":
-            res.sendFile(__dirname +"/uploads/" + "colorSLAB_pre_"+fileName + ".jpg")
+            return res.sendFile(__dirname +"/uploads/" + "colorSLAB_pre_"+fileName + ".jpg")
             break;
             case "colorshsv":
-              res.sendFile(__dirname +"/uploads/" + "colorSHSV_pre_"+fileName + ".jpg")
+             return  res.sendFile(__dirname +"/uploads/" + "colorSHSV_pre_"+fileName + ".jpg")
               break;
               case "colorsxyz":
-                res.sendFile(__dirname +"/uploads/" + "colorSXYZ_pre_"+fileName + ".jpg")
+               return res.sendFile(__dirname +"/uploads/" + "colorSXYZ_pre_"+fileName + ".jpg")
                 break;
                  case "colorsd":
                   fs.readFile(__dirname + "/uploads/" + "colorSD_" + fileName + ".txt", (error, data)=>{
                     if(error)
                     res.json({message: error})
                     else
-                    res.json({message: data.toString()}) 
+                    return res.json({message: data.toString()}) 
                   })
+                  break;
+                  case "colort":
+               return res.sendFile(__dirname +"/uploads/" + "colorT_pre_"+fileName + ".jpg")
+                break;
 
-                 break;
+                
                 
         
 
@@ -292,7 +308,7 @@ app.get("/clear", (req,res)=>{
       })
  })
  pythonProcess.on("error", (err)=>{
-   console.log(error)
+   console.log(err)
  })
  pythonProcess.stdout.on("data", (data)=>{
     outputdata += data.toString()
@@ -308,7 +324,49 @@ app.get('/loading4/:imgname', (req,res)=>{
   let imgName = req.params.imgname
   res.render("loading4" ,{imgName})
 })
+app.get("/output/:imgName", (req,res)=>{
+  let imgName = req.params.imgName
+  res.render("output", {imgName})
+})
 
 
+app.get("/delete/:img", (req,res)=>{
+       let img = req.params.img;
+       fs.unlink(__dirname + "/uploads/" + img + ".jpg", (err)=>{
+
+       })
+       fs.unlink(__dirname + "/uploads/pre_" + img + ".jpg", (err)=>{
+
+      })
+      fs.unlink(__dirname + "/uploads/colorP_pre_" + img + ".jpg", (err)=>{
+
+      })
+      fs.unlink(__dirname + "/uploads/colorPD_" + img + ".txt", (err)=>{
+        // console.log(err)
+      })
+      fs.unlink(__dirname + "/uploads/colorSD_" + img + ".txt", (err)=>{
+        // console.log(err)
+      })
+      fs.unlink(__dirname + "/uploads/colorSHSV_pre_" + img + ".jpg", (err)=>{
+
+      })
+      fs.unlink(__dirname + "/uploads/colorSLAB_pre_" + img + ".jpg", (err)=>{
+
+      })
+      fs.unlink(__dirname + "/uploads/colorSRGB_pre_" + img + ".jpg", (err)=>{
+
+      })
+      fs.unlink(__dirname + "/uploads/colorSXYZ_pre_" + img + ".jpg", (err)=>{
+
+      })
+      fs.unlink(__dirname + "/uploads/colorT_pre_" + img + ".jpg", (err)=>{
+
+      })
+      fs.unlink(__dirname + "/uploads/colorTD_" + img + ".txt", (err)=>{
+  //  console.log(err)
+      })
+      res.json({message: "Done"})
+
+})
 const PORT = process.env.PORT || 3000 ;
 app.listen(PORT,e => console.log(`server is listening at http://localhost:${PORT}`));
