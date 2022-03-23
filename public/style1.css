@@ -31,7 +31,7 @@ body{
 .btns{
     border: none;
     border-radius: 4px;
-    background-color: rgb(25, 112, 25);
+    background-color: rgb(48, 51, 48);
     color: white;
     padding: 8px;
     font-size: 30px;
@@ -41,7 +41,7 @@ body{
 .btns:hover{
     background-color: transparent;
     cursor: pointer;
-    border: solid 2px rgb(25, 112, 25);
+    border: solid 2px rgb(7, 7, 7);
 
 }
 
@@ -71,18 +71,21 @@ body{
 .btn{
     border: none;
     border-radius: 4px;
-    background-color: rgb(25, 112, 25);
+    background-color: rgb(15, 15, 15);
     color: white;
     padding: 3px;
     font-size: 20px;
     width: 100px;
     height: 40px;
     font-family: 'Nunito Sans', sans-serif;
+    display: inline-block;
+    margin: 5px;
 }
 
 .btn:hover{
-    background-color: transparent;
+    background-color: #3b484d;
+    color: white;
     cursor: pointer;
-    border: solid 2px rgb(25, 112, 25);
+    border: solid 2px rgb(0, 5, 0);
 
 }

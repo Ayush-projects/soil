@@ -130,16 +130,23 @@ upload(req, res, function (err) {
  }) 
 
 
+
+ app.get("/output" ,(req,res)=>{
+   res.render("output")
+ })
+
+
  app.get("/colorPalette/:id", (req,res)=>{
+     
          let imageName = req.params.id;
-       
+         
         let pythonProcess = spawn("python", ["Colorpalette.py",  __dirname + "/uploads/pre_" + imageName  + ".jpg"])
          let outputdata = ""
 
         pythonProcess.on("close", (app)=>{
              fs.writeFile(__dirname + "/uploads/colorPD_" + imageName +".txt", outputdata, (error, data)=>{
                if(error)
-               {   console.log(error)
+               {  
                 res.json({message: error})
                }
               
@@ -150,8 +157,8 @@ upload(req, res, function (err) {
 
              })
         })
-        pythonProcess.on("error", (err)=>{
-          console.log(error)
+        pythonProcess.on("error", (error)=>{
+          console.log("Hello World")
         })
         pythonProcess.stdout.on("data", (data)=>{
            outputdata += data.toString()
@@ -247,9 +254,45 @@ upload(req, res, function (err) {
    let imageName = req.params.id;
    res.render("display", {imageName})
  })
+
+
+ app.get("/texture/:id", (req,res)=>{
+  let imageName = req.params.id;
+
+ let pythonProcess = spawn("python", ["texture.py",  __dirname + "/uploads/pre_" + imageName  + ".jpg"])
+  let outputdata = ""
+
+ pythonProcess.on("close", (app)=>{
+      fs.writeFile(__dirname + "/uploads/colorTD_" + imageName +".txt", outputdata, (error, data)=>{
+        if(error)
+        {   console.log(error)
+         res.json({message: error})
+        }
+       
+        else
+        {
+          res.json({redirect: "texture/" + imageName})
+        }
+
+      })
+ })
+ pythonProcess.on("error", (err)=>{
+   console.log(error)
+ })
+ pythonProcess.stdout.on("data", (data)=>{
+    outputdata += data.toString()
+ })
+})
  
 
-app.get("/color") 
+ app.get('/loading3/:imgname', (req,res)=>{
+  let imgName = req.params.imgname
+  res.render("loading3" ,{imgName})
+})
+app.get('/loading4/:imgname', (req,res)=>{
+  let imgName = req.params.imgname
+  res.render("loading4" ,{imgName})
+})
 
 
 const PORT = process.env.PORT || 3000 ;

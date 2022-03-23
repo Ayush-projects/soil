@@ -16,7 +16,7 @@ html,body{
 }
 
  body {
-  background: #e8f6de;
+  background: #72c3c9;
 }
 
 #circle {
@@ -55,8 +55,9 @@ html,body{
     <title>Loading</title>
 </head>
 <body>
-    <h1 class = "head">Processing Color Space</h1><br>
-    <img src="/gif2.gif" style="display: block; margin: auto; border-radius: 100px;">
+    <h1 class = "head">Processing PH</h1><br>
+    <img src="/gif4.gif" style="display: block; margin: auto; border-radius: 100px; height: 75%;">
+   
    
 
 <div id="data" style="display: none;">
@@ -72,13 +73,13 @@ html,body{
      
 
 
-        fetch("/colorSpace/"+ imageName ).then((res)=>{
-            return res.json();
-        }).then((fres)=>{
-             window.location.href =  "/loading3/" + imageName
-        }).catch((error)=>{
-            console.log(error)
-        })
+        // fetch("/colorSpace/"+ imageName ).then((res)=>{
+        //     return res.json();
+        // }).then((fres)=>{
+        //      window.location.href =  "/loading3/" + imageName
+        // }).catch((error)=>{
+        //     console.log(error)
+        // })
 
 
 
