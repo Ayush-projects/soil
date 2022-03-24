@@ -218,7 +218,7 @@ a.article:hover {
    				<a href="#" onclick="texture()">Texture</a>
    			</li>
    			<li>
-   				<a href="#">PH</a>
+   				<a href="#"onclick="ph()">PH</a>
    			</li>
    		</ul>
    		
@@ -387,6 +387,18 @@ a.article:hover {
           document.getElementById("iframe").src = "/api/colort/" + imgName
 
           fetch("/api/colortd/"+ imgName).then((res)=>{
+            return res.json()
+          }).then((fres)=>{
+          document.getElementById("info").innerHTML = fres.message
+          })
+         
+
+        }
+        function ph()
+        {
+          document.getElementById("iframe").src = "/outdoor.svg"
+
+          fetch("/api/colorph/"+ imgName).then((res)=>{
             return res.json()
           }).then((fres)=>{
           document.getElementById("info").innerHTML = fres.message

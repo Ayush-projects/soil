@@ -266,6 +266,14 @@ catch(err)
                     return res.json({message: data.toString()}) 
                   })
                   break;
+                  case "colorph":
+                    fs.readFile(__dirname + "/uploads/" + "colorPHD_" + fileName + ".txt", (error, data)=>{
+                      if(error)
+                      res.json({message: error})
+                      else
+                      return res.json({message: data.toString()}) 
+                    })
+                    break;
                   case "colort":
                return res.sendFile(__dirname +"/uploads/" + "colorT_pre_"+fileName + ".jpg")
                 break;
@@ -287,7 +295,34 @@ catch(err)
  })
 
 
- app.get("/texture/:id", (req,res)=>{
+ app.get("/ph/:id", (req,res)=>{
+  let imageName = req.params.id;
+
+ let pythonProcess = spawn("python", ["ph.py",  __dirname + "/uploads/pre_" + imageName  + ".jpg"])
+  let outputdata = ""
+
+ pythonProcess.on("close", (app)=>{
+      fs.writeFile(__dirname + "/uploads/colorPHD_" + imageName +".txt", outputdata, (error, data)=>{
+        if(error)
+        {   console.log(error)
+         res.json({message: error})
+        }
+       
+        else
+        {
+          res.json({redirect: "ph/" + imageName})
+        }
+
+      })
+ })
+ pythonProcess.on("error", (err)=>{
+   console.log(err)
+ })
+ pythonProcess.stdout.on("data", (data)=>{
+    outputdata += data.toString()
+ })
+})
+app.get("/texture/:id", (req,res)=>{
   let imageName = req.params.id;
 
  let pythonProcess = spawn("python", ["texture.py",  __dirname + "/uploads/pre_" + imageName  + ".jpg"])
@@ -342,6 +377,9 @@ app.get("/delete/:img", (req,res)=>{
 
       })
       fs.unlink(__dirname + "/uploads/colorPD_" + img + ".txt", (err)=>{
+        // console.log(err)
+      })
+      fs.unlink(__dirname + "/uploads/colorPHD_" + img + ".txt", (err)=>{
         // console.log(err)
       })
       fs.unlink(__dirname + "/uploads/colorSD_" + img + ".txt", (err)=>{

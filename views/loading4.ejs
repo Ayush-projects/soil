@@ -73,13 +73,13 @@ html,body{
      
 
 
-        // fetch("/colorSpace/"+ imageName ).then((res)=>{
-        //     return res.json();
-        // }).then((fres)=>{
-        //      window.location.href =  "/loading3/" + imageName
-        // }).catch((error)=>{
-        //     console.log(error)
-        // })
+        fetch("/ph/"+ imageName ).then((res)=>{
+            return res.json();
+        }).then((fres)=>{
+             window.location.href =  "/output/" + imageName
+        }).catch((error)=>{
+            console.log(error)
+        })
 
 
 
